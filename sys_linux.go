@@ -4,7 +4,11 @@
 
 package tcp
 
+import (
+	"golang.org/x/sys/unix"
+)
+
 var options = [soMax]option{
-	soBuffered:  {0, sysSIOCINQ},
-	soAvailable: {0, sysSIOCOUTQ},
+	soBuffered:  {0, unix.SIOCINQ},
+	soAvailable: {0, unix.SIOCOUTQ},
 }

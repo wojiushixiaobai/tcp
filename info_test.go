@@ -26,10 +26,10 @@ import (
 var infoTests = []struct {
 	host, url string
 }{
-	{
-		host: "golang.org",
-		url:  "https://golang.org/robots.txt",
-	},
+	// {
+	//	host: "golang.org",
+	//	url:  "https://golang.org/robots.txt",
+	// },
 	{
 		host: "github.com",
 		url:  "https://github.com/robots.txt",

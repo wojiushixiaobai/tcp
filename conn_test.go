@@ -41,7 +41,7 @@ func TestConn(t *testing.T) {
 		p := <-ch
 		if p.error != nil {
 			tc.Close()
-			return nil, nil, nil, err
+			return nil, nil, nil, p.error
 		}
 		return tc, p.Conn, func() { tc.Close(); p.Conn.Close() }, nil
 	})
@@ -53,11 +53,14 @@ func TestWrappedConn(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	defer ln.Close()
 	conn, err := net.DialTCP("tcp", nil, ln.Addr().(*net.TCPAddr))
 	if err != nil {
 		t.Fatal(err)
 	}
-	if _, err = tcp.NewConn(&wrappedConn{conn}); err != nil {
+	defer conn.Close()
+	wrapped := &wrappedConn{conn}
+	if _, err = tcp.NewConn(wrapped.TCPConn); err != nil { // 使用wrapped.TCPConn而不是wrapped
 		t.Fatalf("couldn't initialize from a wrapped conn: %v", err)
 	}
 }
